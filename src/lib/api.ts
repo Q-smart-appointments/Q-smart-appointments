@@ -75,7 +75,7 @@ const services: Service[] = [
       },
     ]
   },
-  {
+  /*{
     id: "s2",
     name: "Dental Care",
     description: "Dental checkup, cleaning, and consultation",
@@ -88,7 +88,7 @@ const services: Service[] = [
         averageWaitTime: 25 
       }
     ]
-  },
+  },*/
   {
     id: "s3",
     name: "Hair Salon",
