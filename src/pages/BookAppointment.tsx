@@ -1,8 +1,5 @@
-
-import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
-import { Service, Provider, getServices } from "@/lib/api";
+import { useEffect } from "react";
+import { getServices } from "@/lib/api";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ServiceCard from "@/components/ServiceCard";
@@ -11,75 +8,33 @@ import { Button } from "@/components/ui/button";
 import BookingSteps from "@/components/booking/BookingSteps";
 import ProvidersList from "@/components/booking/ProvidersList";
 import TimeSlots from "@/components/booking/TimeSlots";
+import { useBooking } from "@/hooks/useBooking";
 
 const BookAppointment = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-  const [step, setStep] = useState(1);
-  const [services, setServices] = useState<Service[]>([]);
-  const [providers, setProviders] = useState<Provider[]>([]);
-  const [selectedService, setSelectedService] = useState<string>("");
-  const [selectedProvider, setSelectedProvider] = useState<string>("");
-  const [selectedDate, setSelectedDate] = useState<Date>();
-  const [selectedTime, setSelectedTime] = useState<string>("");
-  const [loading, setLoading] = useState(true);
-
-  const availableTimes = [
-    "09:00 AM",
-    "10:00 AM",
-    "11:00 AM",
-    "02:00 PM",
-    "03:00 PM",
-    "04:00 PM",
-  ];
+  const {
+    step,
+    setStep,
+    services,
+    providers,
+    loading,
+    availableTimes,
+    handleServiceSelect,
+    handleDateSelect,
+    handleTimeSelect,
+  } = useBooking();
 
   useEffect(() => {
     const initializeBooking = async () => {
       try {
-        setLoading(true);
         const servicesData = await getServices();
         setServices(servicesData);
-        
-        const serviceId = searchParams.get("serviceId");
-        if (serviceId) {
-          setSelectedService(serviceId);
-          setStep(2);
-        }
       } catch (error) {
         console.error("Error fetching services:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
     initializeBooking();
-  }, [searchParams]);
-
-  const handleServiceSelect = async (serviceId: string) => {
-    setSelectedService(serviceId);
-    try {
-      const providersData = await getProviders();
-      setProviders(providersData);
-      setStep(2);
-    } catch (error) {
-      console.error("Error fetching providers:", error);
-    }
-  };
-
-  const handleDateSelect = (date: Date | undefined) => {
-    setSelectedDate(date);
-    if (date) setStep(4);
-  };
-
-  const handleTimeSelect = (time: string) => {
-    setSelectedTime(time);
-    if (!isAuthenticated) {
-      navigate("/login");
-    } else {
-      console.log("Creating appointment...");
-    }
-  };
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100">
