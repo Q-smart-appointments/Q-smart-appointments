@@ -10,31 +10,25 @@ interface ServiceCardProps {
 
 const ServiceCard = ({ service, onSelect }: ServiceCardProps) => {
   return (
-    <Card className="w-full transition-all hover:scale-105 duration-300 bg-gradient-to-br from-white to-gray-50 border border-gray-100">
+    <Card className="w-full transition-all hover:shadow-md">
       <CardHeader>
-        <div className="flex items-center space-x-4">
-          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-queueless-primary to-queueless-secondary text-white flex items-center justify-center text-2xl shadow-lg">
+        <div className="flex items-center space-x-3">
+          <div className="w-12 h-12 rounded-full bg-queueless-light text-queueless-primary flex items-center justify-center text-2xl">
             {service.icon}
           </div>
           <div>
-            <CardTitle className="text-xl font-bold bg-gradient-to-r from-queueless-dark to-queueless-primary bg-clip-text text-transparent">
-              {service.name}
-            </CardTitle>
-            <CardDescription className="text-sm font-medium text-queueless-grey">
-              {service.providers.length} Providers Available
-            </CardDescription>
+            <CardTitle className="text-lg font-semibold">{service.name}</CardTitle>
+            <CardDescription className="text-sm">{service.providers.length} Providers Available</CardDescription>
           </div>
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-queueless-grey text-sm leading-relaxed">
-          {service.description}
-        </p>
+        <p className="text-queueless-grey text-sm">{service.description}</p>
       </CardContent>
       <CardFooter>
         <Button 
           onClick={() => onSelect(service.id)} 
-          className="w-full bg-gradient-to-r from-queueless-primary to-queueless-secondary hover:opacity-90 transition-opacity shadow-md"
+          className="w-full bg-queueless-primary hover:bg-queueless-secondary"
         >
           Book Appointment
         </Button>
